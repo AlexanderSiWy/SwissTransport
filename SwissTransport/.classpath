@@ -4,11 +4,7 @@
 	<classpathentry kind="src" path="main/java/resources"/>
 	<classpathentry kind="src" path="main/test/src"/>
 	<classpathentry kind="src" path="main/test/resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=TrialAndError&amp;ivyXmlPath=build%2Fivy.xml&amp;confs=*"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_131"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

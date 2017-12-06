@@ -33,6 +33,11 @@ public class Location {
 		return distance;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	public static class LocationList implements JsonList<Location> {
 		@JsonProperty(value = "stations")
 		private List<Location> list;

@@ -29,7 +29,6 @@ public abstract class RestRequest<T, L extends JsonList<T>> {
 				}
 			}
 		}
-		System.out.println(query.getUri().toString());
 		Response response = query.request(MediaType.APPLICATION_JSON_TYPE).get();
 		return response.readEntity(clazz);
 	}

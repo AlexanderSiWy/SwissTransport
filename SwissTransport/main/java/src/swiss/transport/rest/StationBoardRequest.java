@@ -1,11 +1,11 @@
-package rest;
+package swiss.transport.rest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import transport.StationBoard;
-import transport.StationBoard.StationBoardList;
-import transport.Transportations;
+import swiss.transport.entity.StationBoard;
+import swiss.transport.entity.StationBoard.StationBoardList;
+import swiss.transport.entity.Transportations;
 
 public class StationBoardRequest extends RestRequest<StationBoard, StationBoardList> {
 	/**

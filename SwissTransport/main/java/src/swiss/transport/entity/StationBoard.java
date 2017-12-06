@@ -1,8 +1,14 @@
-package transport;
+package swiss.transport.entity;
 
 import java.util.List;
 
-public class Journey {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import swiss.transport.rest.JsonList;
+
+public class StationBoard {
+
+	private Stop stop;
 	private String name;
 	private String category;
 	private String subcategory;
@@ -13,6 +19,10 @@ public class Journey {
 	private List<Stop> passList;
 	private String capacity1st;
 	private String capacity2nd;
+
+	public Stop getStop() {
+		return stop;
+	}
 
 	public String getName() {
 		return name;
@@ -52,5 +62,21 @@ public class Journey {
 
 	public String getCapacity2nd() {
 		return capacity2nd;
+	}
+
+	public static class StationBoardList implements JsonList<StationBoard> {
+		@JsonProperty(value = "stationboard")
+		private List<StationBoard> list;
+
+		private Location station;
+
+		@Override
+		public List<StationBoard> getList() {
+			return list;
+		}
+
+		public Location getStation() {
+			return station;
+		}
 	}
 }

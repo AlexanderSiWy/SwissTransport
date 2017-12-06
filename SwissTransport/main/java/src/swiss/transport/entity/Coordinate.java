@@ -1,4 +1,4 @@
-package transport;
+package swiss.transport.entity;
 
 public class Coordinate {
 	public String type;

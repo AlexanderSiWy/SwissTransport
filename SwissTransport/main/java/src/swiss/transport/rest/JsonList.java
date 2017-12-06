@@ -1,4 +1,4 @@
-package rest;
+package swiss.transport.rest;
 
 import java.util.List;
 

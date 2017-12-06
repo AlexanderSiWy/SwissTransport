@@ -1,10 +1,10 @@
-package transport;
+package swiss.transport.entity;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import rest.JsonList;
+import swiss.transport.rest.JsonList;
 
 public class Connection {
 	private Stop from;

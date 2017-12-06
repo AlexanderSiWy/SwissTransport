@@ -1,4 +1,4 @@
-package transport;
+package swiss.transport.entity;
 
 public class Prognosis {
 	private String platform;

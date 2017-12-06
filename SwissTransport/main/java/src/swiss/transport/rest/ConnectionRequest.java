@@ -1,13 +1,13 @@
-package rest;
+package swiss.transport.rest;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import transport.Accessibility;
-import transport.Connection;
-import transport.Connection.ConnectionList;
-import transport.Transportations;
+import swiss.transport.entity.Accessibility;
+import swiss.transport.entity.Connection;
+import swiss.transport.entity.Connection.ConnectionList;
+import swiss.transport.entity.Transportations;
 
 public class ConnectionRequest extends RestRequest<Connection, ConnectionList> {
 	/**

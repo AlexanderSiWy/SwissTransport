@@ -18,8 +18,9 @@ public class LocationRequest extends RestRequest<Location, LocationList> {
 	 *            Basel
 	 */
 
-	public void query(String query) {
+	public LocationRequest query(String query) {
 		addParam(new Parameter("query", query));
+		return this;
 	}
 
 	/**
@@ -33,9 +34,10 @@ public class LocationRequest extends RestRequest<Location, LocationList> {
 	 * 
 	 *            8.306130
 	 */
-	public void xy(double x, double y) {
+	public LocationRequest xy(double x, double y) {
 		addParam(new Parameter("x", String.valueOf(x)));
 		addParam(new Parameter("y", String.valueOf(y)));
+		return this;
 	}
 
 	/**
@@ -47,8 +49,9 @@ public class LocationRequest extends RestRequest<Location, LocationList> {
 	 *            Looks up for points of interest (Clock tower, China garden)
 	 *            address: Looks up for an address (Zurich Bahnhofstrasse 33)
 	 */
-	public void type(String type) {
+	public LocationRequest type(String type) {
 		addParam(new Parameter("type", type));
+		return this;
 	}
 
 	/**
@@ -56,7 +59,8 @@ public class LocationRequest extends RestRequest<Location, LocationList> {
 	 * @param transportations
 	 *            Only with x and y parameter. Transportation means;
 	 */
-	public void transportations(Transportations... transportations) {
+	public LocationRequest transportations(Transportations... transportations) {
 		addParam(new Parameter("transportations[]", Transportations.toStringArray(transportations)));
+		return this;
 	}
 }

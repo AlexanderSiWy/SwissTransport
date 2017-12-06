@@ -28,8 +28,9 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 * @param station
 	 *            Specifies the location of which a stationboard should be returned
 	 */
-	private void station(String station) {
+	private StationBoardRequest station(String station) {
 		addParam(new Parameter("station", station));
+		return this;
 	}
 
 	/**
@@ -40,8 +41,9 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 *            required. If both an id and a station are specified the id has
 	 *            precedence.
 	 */
-	public void id(String id) {
+	public StationBoardRequest id(String id) {
 		addParam(new Parameter("id", id));
+		return this;
 	}
 
 	/**
@@ -55,8 +57,9 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 *            of the connections leaving at 19:35 is within the limit, all
 	 *            connections leaving at 19:35 are shown.
 	 */
-	public void limit(int limit) {
+	public StationBoardRequest limit(int limit) {
 		addParam(new Parameter("limit", String.valueOf(limit)));
+		return this;
 	}
 
 	/**
@@ -64,8 +67,9 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 * @param transportations
 	 *            Transportation means;
 	 */
-	public void transportations(Transportations... transportations) {
+	public StationBoardRequest transportations(Transportations... transportations) {
 		addParam(new Parameter("transportations[]", Transportations.toStringArray(transportations)));
+		return this;
 	}
 
 	/**
@@ -74,8 +78,9 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 *            Date and time of departing connections, in the format YYYY-MM-DD
 	 *            hh:mm.
 	 */
-	public void datetime(LocalDateTime datetime) {
+	public StationBoardRequest datetime(LocalDateTime datetime) {
 		addParam(new Parameter("datetime", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(datetime)));
+		return this;
 	}
 
 	/**
@@ -83,7 +88,8 @@ public class StationBoardRequest extends RestRequest<StationBoard, StationBoardL
 	 * @param arrival
 	 *            departure (default) or arrival (default = false)
 	 */
-	public void arrival(boolean arrival) {
+	public StationBoardRequest arrival(boolean arrival) {
 		addParam(new Parameter("type", arrival ? "arrival" : "departure "));
+		return this;
 	}
 }

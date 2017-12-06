@@ -2,7 +2,6 @@ package transport;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import rest.JsonList;
@@ -12,12 +11,11 @@ public class Connection {
 	private Stop to;
 	private String duration;
 	private String transfers;
-	private String service; // TODO
+	private String service;
 	private List<String> products;
 	private String capacity1st;
 	private String capacity2nd;
-	@JsonIgnore
-	private List<Object> sections; // TODO
+	private List<Section> sections;
 
 	public Stop getFrom() {
 		return from;
@@ -51,17 +49,32 @@ public class Connection {
 		return capacity2nd;
 	}
 
-	public List<Object> getSections() {
+	public List<Section> getSections() {
 		return sections;
 	}
 
-	public static class ConnectionList implements JsonList<Location> {
+	public static class ConnectionList implements JsonList<Connection> {
 		@JsonProperty(value = "connections")
-		private List<Location> list;
+		private List<Connection> list;
+		private Location from;
+		private Location to;
+		private Stations stations;
 
 		@Override
-		public List<Location> getList() {
+		public List<Connection> getList() {
 			return list;
+		}
+
+		public Location getFrom() {
+			return from;
+		}
+
+		public Location getTo() {
+			return to;
+		}
+
+		public Stations getStations() {
+			return stations;
 		}
 	}
 }

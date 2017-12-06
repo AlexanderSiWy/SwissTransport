@@ -1,14 +1,14 @@
 package transport;
 
 public class Prognosis {
-	private String platfrom;
+	private String platform;
 	private String arrival;
 	private String departure;
 	private String capacity1st;
 	private String capacity2nd;
 
-	public String getPlatfrom() {
-		return platfrom;
+	public String getPlatform() {
+		return platform;
 	}
 
 	public String getArrival() {

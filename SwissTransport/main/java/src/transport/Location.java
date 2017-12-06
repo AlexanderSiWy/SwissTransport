@@ -33,7 +33,7 @@ public class Location {
 		return distance;
 	}
 
-	public static class StationList implements JsonList<Location> {
+	public static class LocationList implements JsonList<Location> {
 		@JsonProperty(value = "stations")
 		private List<Location> list;
 

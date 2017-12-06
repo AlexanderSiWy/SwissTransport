@@ -1,13 +1,13 @@
 package rest;
 
 import transport.Location;
-import transport.Location.StationList;
+import transport.Location.LocationList;
 import transport.Transportations;
 
-public class StationRequest extends RestRequest<Location> {
+public class LocationRequest extends RestRequest<Location, LocationList> {
 
-	public StationRequest() {
-		super("locations", StationList.class);
+	public LocationRequest() {
+		super("locations", LocationList.class);
 	}
 
 	/**

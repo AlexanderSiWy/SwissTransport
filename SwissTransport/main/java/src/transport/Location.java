@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import rest.JsonList;
 
-public class Station {
+public class Location {
 	private String id;
 	private String name;
 	private String score;
@@ -33,12 +33,12 @@ public class Station {
 		return distance;
 	}
 
-	public static class StationList implements JsonList<Station> {
+	public static class StationList implements JsonList<Location> {
 		@JsonProperty(value = "stations")
-		private List<Station> list;
+		private List<Location> list;
 
 		@Override
-		public List<Station> getList() {
+		public List<Location> getList() {
 			return list;
 		}
 	}

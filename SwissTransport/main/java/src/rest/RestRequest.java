@@ -24,9 +24,12 @@ public abstract class RestRequest<T, L extends JsonList<T>> {
 		WebTarget query = ClientBuilder.newClient().target(HTTP_TRANSPORT_OPENDATA_CH_V1).path(path);
 		for (Parameter param : params) {
 			for (String parameterValue : param.getValues()) {
-				query = query.queryParam(param.getKey(), parameterValue);
+				if (parameterValue != null && !parameterValue.isEmpty()) {
+					query = query.queryParam(param.getKey(), parameterValue);
+				}
 			}
 		}
+		System.out.println(query.getUri().toString());
 		Response response = query.request(MediaType.APPLICATION_JSON_TYPE).get();
 		return response.readEntity(clazz);
 	}

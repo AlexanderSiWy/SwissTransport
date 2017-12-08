@@ -1,8 +1,9 @@
 package swiss.transport.rest.transport;
 
+import swiss.transport.entity.location.GeoLocation;
 import swiss.transport.entity.transport.Location;
-import swiss.transport.entity.transport.Transportations;
 import swiss.transport.entity.transport.Location.LocationList;
+import swiss.transport.entity.transport.Transportations;
 
 public class LocationRequest extends TransportRestRequest<Location, LocationList> {
 
@@ -62,5 +63,9 @@ public class LocationRequest extends TransportRestRequest<Location, LocationList
 	public LocationRequest transportations(Transportations... transportations) {
 		addParam(new Parameter("transportations[]", Transportations.toStringArray(transportations)));
 		return this;
+	}
+
+	public LocationRequest xy(GeoLocation geoLocation) {
+		return xy(geoLocation.getLocation().getLat(), geoLocation.getLocation().getLng());
 	}
 }

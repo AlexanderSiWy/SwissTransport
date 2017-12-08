@@ -1,19 +1,19 @@
 package swiss.transport.entity.transport;
 
 public class Coordinate {
-	public String type;
-	public String x;
-	public String y;
+	private String type;
+	private Double x;
+	private Double y;
 
 	public String getType() {
 		return type;
 	}
 
-	public String getX() {
+	public Double getX() {
 		return x;
 	}
 
-	public String getY() {
+	public Double getY() {
 		return y;
 	}
 }

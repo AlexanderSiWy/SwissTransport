@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.controlsfx.control.MasterDetailPane;
+import org.controlsfx.control.ToggleSwitch;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.glyphfont.FontAwesome.Glyph;
@@ -17,11 +19,14 @@ import org.controlsfx.validation.ValidationSupport;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
 import swiss.transport.gui.elements.TimePicker;
@@ -32,9 +37,7 @@ public class SwissTransportController {
 	private static final Logger LOGGER = LogManager.getLogger(SwissTransportController.class);
 
 	@FXML
-	private GridPane selectionPane;
-	@FXML
-	private GridPane resultsPane;
+	private MasterDetailPane resultsPane;
 	@FXML
 	private CustomTextField fieldFrom;
 	@FXML
@@ -45,7 +48,16 @@ public class SwissTransportController {
 	private DatePicker datePicker;
 	@FXML
 	private TimePicker timePicker;
-	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");;
+	@FXML
+	private Label lblDeparture;
+	@FXML
+	private Label lblArrival;
+	@FXML
+	private ToggleSwitch tglbtnTimeIsArrival;
+	@FXML
+	private Button btnSearch;
+
+	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");
 	private ValidationSupport validation = new ValidationSupport();
 
 	private ObjectProperty<Location> from = new SimpleObjectProperty<>();
@@ -59,6 +71,39 @@ public class SwissTransportController {
 		setTextFieldPropertys(fieldTo, to);
 		setCurrentDate();
 		setCurrentTime();
+		setArrivalDeparturePropertys();
+		setValidation();
+	}
+
+	private void setArrivalDeparturePropertys() {
+		setFontWeight(lblDeparture, FontWeight.BOLD);
+		tglbtnTimeIsArrival.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			revertCssAdjustments();
+			setFonts(newValue);
+		});
+	}
+
+	private void revertCssAdjustments() {
+		tglbtnTimeIsArrival.pseudoClassStateChanged(PseudoClass.getPseudoClass("selected"), false);
+	}
+
+	private void setFonts(Boolean isArrival) {
+		if (isArrival) {
+			setFontWeight(lblArrival, FontWeight.BOLD);
+			setFontWeight(lblDeparture, FontWeight.NORMAL);
+		} else {
+			setFontWeight(lblArrival, FontWeight.NORMAL);
+			setFontWeight(lblDeparture, FontWeight.BOLD);
+		}
+	}
+
+	private void setFontWeight(Label label, FontWeight bold) {
+		Font font = lblArrival.getFont();
+		label.setFont(Font.font(font.getFamily(), bold, font.getSize()));
+	}
+
+	@FXML
+	private void search(ActionEvent event) {
 	}
 
 	private void setClosestLocation(ObjectProperty<Location> property) {
@@ -94,8 +139,13 @@ public class SwissTransportController {
 	}
 
 	private void setValidation() {
-		validation.registerValidator(fieldFrom, (control, field) -> new ValidationResult().addErrorIf(control,
-				"Must not be empty", ((String) field).isEmpty()));
+		final String text = "Darf nicht leer sein";
+		validation.registerValidator(fieldFrom, false,
+				(control, field) -> new ValidationResult().addErrorIf(control, text, ((String) field).isEmpty()));
+		validation.registerValidator(datePicker, false,
+				(control, field) -> new ValidationResult().addErrorIf(control, text, field == null));
+		validation.registerValidator(timePicker, false,
+				(control, field) -> new ValidationResult().addErrorIf(control, text, field == null));
 	}
 
 	private LocationList getLocationList(String text) {

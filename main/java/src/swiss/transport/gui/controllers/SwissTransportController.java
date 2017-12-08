@@ -29,7 +29,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
+import swiss.transport.gui.elements.ConnectionTable;
 import swiss.transport.gui.elements.TimePicker;
+import swiss.transport.rest.transport.ConnectionRequest;
 import swiss.transport.rest.transport.LocationRequest;
 
 public class SwissTransportController {
@@ -73,6 +75,8 @@ public class SwissTransportController {
 		setCurrentTime();
 		setArrivalDeparturePropertys();
 		setValidation();
+		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
+		resultsPane.setMasterNode(new ConnectionTable());
 	}
 
 	private void setArrivalDeparturePropertys() {
@@ -104,6 +108,10 @@ public class SwissTransportController {
 
 	@FXML
 	private void search(ActionEvent event) {
+		if (!validation.isInvalid()) {
+			resultsPane.setMasterNode(
+					new ConnectionTable(new ConnectionRequest(from.getValue().getId(), to.getValue().getId()).get()));
+		}
 	}
 
 	private void setClosestLocation(ObjectProperty<Location> property) {

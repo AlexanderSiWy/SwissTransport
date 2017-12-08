@@ -2,7 +2,7 @@ package swiss.transport.entity.transport;
 
 public class Section {
 	private Journey journey;
-	private String walk;
+	private Walk walk;
 	private Stop departure;
 	private Stop arrival;
 
@@ -10,7 +10,7 @@ public class Section {
 		return journey;
 	}
 
-	public String getWalk() {
+	public Walk getWalk() {
 		return walk;
 	}
 

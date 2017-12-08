@@ -9,7 +9,7 @@ import swiss.transport.entity.Connection;
 import swiss.transport.entity.Connection.ConnectionList;
 import swiss.transport.entity.Transportations;
 
-public class ConnectionRequest extends RestRequest<Connection, ConnectionList> {
+public class ConnectionRequest extends TransportRestRequest<Connection, ConnectionList> {
 	/**
 	 * 
 	 * @param from

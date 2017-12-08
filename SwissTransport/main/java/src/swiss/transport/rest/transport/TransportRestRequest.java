@@ -8,14 +8,14 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public abstract class RestRequest<T, L extends JsonList<T>> {
+public abstract class TransportRestRequest<T, L extends JsonList<T>> {
 
 	private static final String HTTP_TRANSPORT_OPENDATA_CH_V1 = "http://transport.opendata.ch/v1/";
 	private String path;
 	private Class<L> clazz;
 	private Set<Parameter> params = new HashSet<>();
 
-	protected RestRequest(String path, Class<L> clazz) {
+	protected TransportRestRequest(String path, Class<L> clazz) {
 		this.path = path;
 		this.clazz = clazz;
 	}

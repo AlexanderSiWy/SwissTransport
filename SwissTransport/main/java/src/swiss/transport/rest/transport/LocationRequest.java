@@ -4,7 +4,7 @@ import swiss.transport.entity.Location;
 import swiss.transport.entity.Location.LocationList;
 import swiss.transport.entity.Transportations;
 
-public class LocationRequest extends RestRequest<Location, LocationList> {
+public class LocationRequest extends TransportRestRequest<Location, LocationList> {
 
 	public LocationRequest() {
 		super("locations", LocationList.class);

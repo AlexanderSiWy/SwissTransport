@@ -7,7 +7,7 @@ import swiss.transport.entity.StationBoard;
 import swiss.transport.entity.StationBoard.StationBoardList;
 import swiss.transport.entity.Transportations;
 
-public class StationBoardRequest extends RestRequest<StationBoard, StationBoardList> {
+public class StationBoardRequest extends TransportRestRequest<StationBoard, StationBoardList> {
 	/**
 	 * 
 	 * @param station

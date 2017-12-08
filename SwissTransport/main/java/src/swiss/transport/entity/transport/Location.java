@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import swiss.transport.entity.location.GeoLocation;
 import swiss.transport.rest.transport.JsonList;
 
 public class Location {
@@ -45,6 +46,11 @@ public class Location {
 		@Override
 		public List<Location> getList() {
 			return list;
+		}
+
+		// TODO
+		public Location getClosest(GeoLocation geoLocation) {
+			return null;
 		}
 	}
 }

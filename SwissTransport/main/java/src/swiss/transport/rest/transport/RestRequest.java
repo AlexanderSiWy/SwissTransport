@@ -1,4 +1,4 @@
-package swiss.transport.rest;
+package swiss.transport.rest.transport;
 
 import java.util.HashSet;
 import java.util.Set;

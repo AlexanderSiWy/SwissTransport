@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import swiss.transport.rest.JsonList;
+import swiss.transport.rest.transport.JsonList;
 
 public class Connection {
 	private Stop from;

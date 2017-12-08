@@ -1,4 +1,4 @@
-package swiss.transport.rest;
+package swiss.transport.rest.transport;
 
 public class Parameter {
 	private String key;

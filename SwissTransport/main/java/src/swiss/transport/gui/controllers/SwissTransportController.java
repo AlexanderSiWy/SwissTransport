@@ -1,5 +1,7 @@
 package swiss.transport.gui.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.controlsfx.control.textfield.CustomTextField;
@@ -9,16 +11,16 @@ import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
-import org.controlsfx.validation.Validator;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.GridPane;
 import swiss.transport.entity.Location;
 import swiss.transport.entity.Location.LocationList;
-import swiss.transport.rest.LocationRequest;
+import swiss.transport.gui.elements.TimePicker;
+import swiss.transport.rest.transport.LocationRequest;
 
 public class SwissTransportController {
 
@@ -32,21 +34,28 @@ public class SwissTransportController {
 	private CustomTextField fieldTo;
 	@FXML
 	private Button btnSwitch;
+	@FXML
+	private DatePicker datePicker;
+	@FXML
+	private TimePicker timePicker;
 	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");;
+	private ValidationSupport validation;
 
 	@FXML
 	private void initialize() {
 		btnSwitch.setGraphic(font.create(Glyph.RANDOM).size(15));
-		ValidationSupport validation = new ValidationSupport();
-		validation.registerValidator(fieldFrom, new Validator<String>() {
-
-			@Override
-			public ValidationResult apply(Control control, String field) {
-				return new ValidationResult().addErrorIf(control, "Must not be empty", field.isEmpty());
-			}
-		});
 		setTextFieldPropertys(fieldFrom);
 		setTextFieldPropertys(fieldTo);
+		setCurrentDate();
+		setCurrentTime();
+	}
+
+	private void setCurrentTime() {
+		timePicker.setTime(LocalTime.now());
+	}
+
+	private void setCurrentDate() {
+		datePicker.setValue(LocalDate.now());
 	}
 
 	private void setTextFieldPropertys(CustomTextField textField) {
@@ -59,6 +68,11 @@ public class SwissTransportController {
 				textField.setText(!list.isEmpty() ? list.get(0).toString() : "");
 			}
 		});
+	}
+
+	private void setValidation() {
+		validation.registerValidator(fieldFrom, (control, field) -> new ValidationResult().addErrorIf(control,
+				"Must not be empty", ((String) field).isEmpty()));
 	}
 
 	private LocationList getLocationList(String text) {

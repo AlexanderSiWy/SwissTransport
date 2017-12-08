@@ -1,4 +1,4 @@
-package swiss.transport.rest;
+package swiss.transport.rest.transport;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

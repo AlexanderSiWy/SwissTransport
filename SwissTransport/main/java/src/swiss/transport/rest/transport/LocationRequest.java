@@ -1,4 +1,4 @@
-package swiss.transport.rest;
+package swiss.transport.rest.transport;
 
 import swiss.transport.entity.Location;
 import swiss.transport.entity.Location.LocationList;

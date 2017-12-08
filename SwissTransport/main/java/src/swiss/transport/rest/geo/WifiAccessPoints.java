@@ -16,6 +16,10 @@ public class WifiAccessPoints {
 		this.signalToNoiseRatio = signalToNoiseRatio;
 	}
 
+	public WifiAccessPoints(String macAddress) {
+		this.macAddress = macAddress;
+	}
+
 	public String getMacAddress() {
 		return macAddress;
 	}
@@ -34,5 +38,25 @@ public class WifiAccessPoints {
 
 	public String getSignalToNoiseRatio() {
 		return signalToNoiseRatio;
+	}
+
+	void setMacAddress(String macAddress) {
+		this.macAddress = macAddress;
+	}
+
+	void setSignalStrength(String signalStrength) {
+		this.signalStrength = signalStrength;
+	}
+
+	void setAge(String age) {
+		this.age = age;
+	}
+
+	void setChannel(String channel) {
+		this.channel = channel;
+	}
+
+	void setSignalToNoiseRatio(String signalToNoiseRatio) {
+		this.signalToNoiseRatio = signalToNoiseRatio;
 	}
 }

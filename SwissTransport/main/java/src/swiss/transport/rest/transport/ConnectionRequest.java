@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import swiss.transport.entity.Accessibility;
-import swiss.transport.entity.Connection;
-import swiss.transport.entity.Connection.ConnectionList;
-import swiss.transport.entity.Transportations;
+import swiss.transport.entity.transport.Accessibility;
+import swiss.transport.entity.transport.Connection;
+import swiss.transport.entity.transport.Transportations;
+import swiss.transport.entity.transport.Connection.ConnectionList;
 
 public class ConnectionRequest extends TransportRestRequest<Connection, ConnectionList> {
 	/**

@@ -17,8 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.GridPane;
-import swiss.transport.entity.Location;
-import swiss.transport.entity.Location.LocationList;
+import swiss.transport.entity.transport.Location;
+import swiss.transport.entity.transport.Location.LocationList;
 import swiss.transport.gui.elements.TimePicker;
 import swiss.transport.rest.transport.LocationRequest;
 

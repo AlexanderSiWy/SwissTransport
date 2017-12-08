@@ -1,4 +1,4 @@
-package swiss.transport.entity;
+package swiss.transport.entity.transport;
 
 public class Section {
 	private Journey journey;

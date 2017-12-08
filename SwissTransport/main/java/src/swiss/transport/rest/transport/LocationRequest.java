@@ -1,8 +1,8 @@
 package swiss.transport.rest.transport;
 
-import swiss.transport.entity.Location;
-import swiss.transport.entity.Location.LocationList;
-import swiss.transport.entity.Transportations;
+import swiss.transport.entity.transport.Location;
+import swiss.transport.entity.transport.Transportations;
+import swiss.transport.entity.transport.Location.LocationList;
 
 public class LocationRequest extends TransportRestRequest<Location, LocationList> {
 

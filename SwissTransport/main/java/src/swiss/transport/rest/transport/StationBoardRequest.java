@@ -3,9 +3,9 @@ package swiss.transport.rest.transport;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import swiss.transport.entity.StationBoard;
-import swiss.transport.entity.StationBoard.StationBoardList;
-import swiss.transport.entity.Transportations;
+import swiss.transport.entity.transport.StationBoard;
+import swiss.transport.entity.transport.Transportations;
+import swiss.transport.entity.transport.StationBoard.StationBoardList;
 
 public class StationBoardRequest extends TransportRestRequest<StationBoard, StationBoardList> {
 	/**

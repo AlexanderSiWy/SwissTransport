@@ -1,4 +1,4 @@
-package swiss.transport.entity;
+package swiss.transport.entity.transport;
 
 import java.util.List;
 

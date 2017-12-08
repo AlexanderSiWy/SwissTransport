@@ -1,7 +1,7 @@
-package swiss.transport.entity;
+package swiss.transport.entity.transport;
 
-public enum Transportations {
-	ICE_TGV_RJ, EC_IC, IR, RE_D, SHIP, S_SN_R, BUS, CABLEWAY, ARZ_EXT, TRAMWAY_UNDERGROUND;
+public enum Accessibility {
+	INDEPENDENT_BOARDING, ASSISTED_BOARDING, ADVANCED_NOTICE;
 
 	public String value() {
 		return toString().toLowerCase();

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.controlsfx.control.MasterDetailPane;
 import org.controlsfx.control.ToggleSwitch;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
@@ -27,9 +26,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import swiss.transport.entity.transport.Connection.ConnectionList;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
-import swiss.transport.gui.elements.ConnectionTable;
+import swiss.transport.gui.elements.ResultsView;
 import swiss.transport.gui.elements.TimePicker;
 import swiss.transport.rest.transport.ConnectionRequest;
 import swiss.transport.rest.transport.LocationRequest;
@@ -39,7 +39,7 @@ public class SwissTransportController {
 	private static final Logger LOGGER = LogManager.getLogger(SwissTransportController.class);
 
 	@FXML
-	private MasterDetailPane resultsPane;
+	private ResultsView resultsView;
 	@FXML
 	private CustomTextField fieldFrom;
 	@FXML
@@ -76,7 +76,6 @@ public class SwissTransportController {
 		setArrivalDeparturePropertys();
 		setValidation();
 		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
-		resultsPane.setMasterNode(new ConnectionTable());
 	}
 
 	private void setArrivalDeparturePropertys() {
@@ -109,8 +108,10 @@ public class SwissTransportController {
 	@FXML
 	private void search(ActionEvent event) {
 		if (!validation.isInvalid()) {
-			resultsPane.setMasterNode(
-					new ConnectionTable(new ConnectionRequest(from.getValue().getId(), to.getValue().getId()).get()));
+			ConnectionRequest connectionRequest = new ConnectionRequest(from.getValue().getId(), to.getValue().getId())
+					.date(datePicker.getValue()).time(timePicker.getTime())
+					.isArrivalTime(tglbtnTimeIsArrival.isSelected()).limit(ConnectionRequest.MAX_LIMIT);
+			ConnectionList connectionList = connectionRequest.get();
 		}
 	}
 

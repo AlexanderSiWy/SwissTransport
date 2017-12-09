@@ -26,12 +26,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import swiss.transport.entity.transport.Connection.ConnectionList;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
 import swiss.transport.gui.elements.ResultsView;
 import swiss.transport.gui.elements.TimePicker;
-import swiss.transport.rest.transport.ConnectionRequest;
 import swiss.transport.rest.transport.LocationRequest;
 
 public class SwissTransportController {
@@ -108,10 +106,8 @@ public class SwissTransportController {
 	@FXML
 	private void search(ActionEvent event) {
 		if (!validation.isInvalid()) {
-			ConnectionRequest connectionRequest = new ConnectionRequest(from.getValue().getId(), to.getValue().getId())
-					.date(datePicker.getValue()).time(timePicker.getTime())
-					.isArrivalTime(tglbtnTimeIsArrival.isSelected()).limit(ConnectionRequest.MAX_LIMIT);
-			ConnectionList connectionList = connectionRequest.get();
+			resultsView.setConnectionRequest(from.getValue(), to.getValue(), datePicker.getValue(),
+					timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
 		}
 	}
 

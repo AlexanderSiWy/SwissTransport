@@ -1,10 +1,18 @@
 package swiss.transport.entity.transport;
 
+import java.time.LocalDateTime;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import swiss.transport.rest.adapter.LocalDateTimeAdapter;
+
 public class Stop {
 	private Location station;
-	private String arrival;
+	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+	private LocalDateTime arrival;
 	private String arrivalTimestamp;
-	private String departure;
+	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+	private LocalDateTime departure;
 	private String departureTimestamp;
 	private String delay;
 	private String platform;
@@ -16,7 +24,7 @@ public class Stop {
 		return station;
 	}
 
-	public String getArrival() {
+	public LocalDateTime getArrival() {
 		return arrival;
 	}
 
@@ -24,7 +32,7 @@ public class Stop {
 		return arrivalTimestamp;
 	}
 
-	public String getDeparture() {
+	public LocalDateTime getDeparture() {
 		return departure;
 	}
 

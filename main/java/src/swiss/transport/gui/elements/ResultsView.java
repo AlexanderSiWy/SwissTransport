@@ -1,5 +1,6 @@
 package swiss.transport.gui.elements;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -42,9 +43,21 @@ public class ResultsView extends MasterDetailPane {
 	}
 
 	private TableColumn<Connection, String> getDurationColumn() {
-		TableColumn<Connection, String> duration = new TableColumn<>("Dauer");
-		duration.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getDuration()));
-		return duration;
+		TableColumn<Connection, String> durationColumn = new TableColumn<>("Dauer");
+		durationColumn.setCellValueFactory(
+				param -> new SimpleStringProperty(getDurationText(param.getValue().getDuration())));
+		return durationColumn;
+	}
+
+	private String getDurationText(Duration duration) {
+		int totalMinutes = (int) duration.getSeconds() / 60;
+		int totalHours = totalMinutes / 60;
+		int minutes = totalMinutes % 60;
+		int hours = totalHours % 24;
+		int days = totalHours / 24;
+		String durationText = (days == 0 ? "" : days + " Tage ") + (hours == 0 ? "" : hours + " h ")
+				+ (minutes == 0 ? "" : minutes + " min");
+		return durationText;
 	}
 
 	private TableColumn<Connection, String> getDepartureColumn() {

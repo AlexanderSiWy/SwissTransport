@@ -1,15 +1,20 @@
 package swiss.transport.entity.transport;
 
+import java.time.Duration;
 import java.util.List;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import swiss.transport.rest.adapter.DurationAdapter;
 import swiss.transport.rest.transport.JsonList;
 
 public class Connection {
 	private Stop from;
 	private Stop to;
-	private String duration;
+	@XmlJavaTypeAdapter(DurationAdapter.class)
+	private Duration duration;
 	private String transfers;
 	private String service;
 	private List<String> products;
@@ -25,7 +30,7 @@ public class Connection {
 		return to;
 	}
 
-	public String getDuration() {
+	public Duration getDuration() {
 		return duration;
 	}
 

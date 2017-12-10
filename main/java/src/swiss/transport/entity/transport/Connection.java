@@ -15,7 +15,7 @@ public class Connection {
 	private Stop to;
 	@XmlJavaTypeAdapter(DurationAdapter.class)
 	private Duration duration;
-	private String transfers;
+	private int transfers;
 	private String service;
 	private List<String> products;
 	private String capacity1st;
@@ -34,7 +34,7 @@ public class Connection {
 		return duration;
 	}
 
-	public String getTransfers() {
+	public int getTransfers() {
 		return transfers;
 	}
 

@@ -40,7 +40,14 @@ public class ResultsView extends MasterDetailPane {
 		tableView.getColumns().add(getArrivalColumn());
 		tableView.getColumns().add(getDurationColumn());
 		tableView.getColumns().add(getTransfersColumn());
+		tableView.getColumns().add(getPlatformColumn());
 		return tableView;
+	}
+
+	private TableColumn<Connection, String> getPlatformColumn() {
+		TableColumn<Connection, String> platform = new TableColumn<>("Gleis");
+		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFrom().getPlatform()));
+		return platform;
 	}
 
 	private TableColumn<Connection, String> getTransfersColumn() {
@@ -83,11 +90,15 @@ public class ResultsView extends MasterDetailPane {
 	}
 
 	private TableColumn<Connection, String> getDirectionColumn() {
-		// TODO not final just first section
 		TableColumn<Connection, String> direction = new TableColumn<Connection, String>("Richtung");
 		direction.setCellValueFactory(param -> {
 			List<Section> sections = param.getValue().getSections();
-			return new SimpleStringProperty(sections.get(sections.size() - 1).getJourney().getTo());
+			for (Section section : sections) {
+				if (section.getJourney() != null) {
+					return new SimpleStringProperty(section.getJourney().getTo());
+				}
+			}
+			return new SimpleStringProperty(param.getValue().getTo().getLocation().getName());
 		});
 		return direction;
 	}

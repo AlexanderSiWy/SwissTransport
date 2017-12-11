@@ -1,10 +1,10 @@
 <ivy-module version="2.0">
     <info organisation="org.apache" module="hello-ivy"/>
     <dependencies>
-    	<dependency org="org.controlsfx" 				name="controlsfx" 		rev="8.40.14" 	conf="default"	/>
-    	<dependency org="org.glassfish.jersey.core" 	name="jersey-client" 	rev="2.25.1" 	conf="default"	/>
-    	<dependency org="org.glassfish.jersey.media" 	name="jersey-media-json-jackson" 	rev="2.22" 	conf="default"	/>
-    	<dependency org="org.apache.logging.log4j" 		name="log4j-api" 		rev="2.8.2" 	conf="default"	/>
-  		<dependency org="org.apache.logging.log4j" 		name="log4j-core" 		rev="2.8.2"		conf="default"	/>
+    	<dependency org="org.controlsfx" 				name="controlsfx" 					rev="8.40.14" 	conf="default"	/>
+    	<dependency org="org.glassfish.jersey.core" 	name="jersey-client" 				rev="2.25.1" 	conf="default"	/>
+    	<dependency org="org.glassfish.jersey.media" 	name="jersey-media-json-jackson" 	rev="2.22" 		conf="default"	/>
+    	<dependency org="org.apache.logging.log4j" 		name="log4j-api" 					rev="2.8.2" 	conf="default"	/>
+  		<dependency org="org.apache.logging.log4j" 		name="log4j-core" 					rev="2.8.2"		conf="default"	/>
    </dependencies> 
 </ivy-module>

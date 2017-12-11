@@ -48,6 +48,7 @@ public class StationBoardResultsView extends MasterDetailPane {
 	private TableColumn<StationBoard, String> getPlatformColumn() {
 		TableColumn<StationBoard, String> platform = new TableColumn<>("Gleis");
 		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStop().getPlatform()));
+		platform.setPrefWidth(50);
 		return platform;
 	}
 
@@ -55,21 +56,24 @@ public class StationBoardResultsView extends MasterDetailPane {
 		TableColumn<StationBoard, String> departureTime = new TableColumn<>("Abfahrt");
 		departureTime.setCellValueFactory(
 				param -> new SimpleStringProperty(formatter.format(param.getValue().getStop().getDeparture())));
+		departureTime.setPrefWidth(100);
 		return departureTime;
 	}
 
 	private TableColumn<StationBoard, String> getArrivalColumn() {
-		TableColumn<StationBoard, String> departureTime = new TableColumn<>("Ankunft");
-		departureTime.setCellValueFactory(param -> {
+		TableColumn<StationBoard, String> arrivalTime = new TableColumn<>("Ankunft");
+		arrivalTime.setCellValueFactory(param -> {
 			List<Stop> passList = param.getValue().getPassList();
 			return new SimpleStringProperty(formatter.format(passList.get(passList.size() - 1).getArrival()));
 		});
-		return departureTime;
+		arrivalTime.setPrefWidth(100);
+		return arrivalTime;
 	}
 
 	private TableColumn<StationBoard, String> getDirectionColumn() {
 		TableColumn<StationBoard, String> direction = new TableColumn<>("Richtung");
 		direction.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTo()));
+		direction.setPrefWidth(200);
 		return direction;
 	}
 }

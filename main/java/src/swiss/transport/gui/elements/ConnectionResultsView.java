@@ -29,8 +29,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 		setMasterNode(connectionTable);
 	}
 
-	public void setRequest(Location from, Location to, LocalDate date, LocalTime time,
-			boolean isArrivalTime) {
+	public void setRequest(Location from, Location to, LocalDate date, LocalTime time, boolean isArrivalTime) {
 		ConnectionRequest connectionRequest = new ConnectionRequest(from.getId(), to.getId()).date(date).time(time)
 				.isArrivalTime(isArrivalTime).limit(ConnectionRequest.MAX_LIMIT);
 		ConnectionList connectionList = connectionRequest.get();
@@ -38,7 +37,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 	}
 
 	private TableView<Connection> getConnectionTable() {
-		TableView<Connection> tableView = new TableView<Connection>();
+		TableView<Connection> tableView = new TableView<>();
 		tableView.getColumns().add(getDirectionColumn());
 		tableView.getColumns().add(getDepartureColumn());
 		tableView.getColumns().add(getArrivalColumn());
@@ -51,6 +50,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 	private TableColumn<Connection, String> getPlatformColumn() {
 		TableColumn<Connection, String> platform = new TableColumn<>("Gleis");
 		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFrom().getPlatform()));
+		platform.setPrefWidth(50);
 		return platform;
 	}
 
@@ -58,6 +58,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 		TableColumn<Connection, String> transfers = new TableColumn<>("Umsteigen");
 		transfers.setCellValueFactory(
 				param -> new SimpleStringProperty(String.valueOf(param.getValue().getTransfers())));
+		transfers.setPrefWidth(70);
 		return transfers;
 	}
 
@@ -65,6 +66,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 		TableColumn<Connection, String> durationColumn = new TableColumn<>("Dauer");
 		durationColumn.setCellValueFactory(
 				param -> new SimpleStringProperty(getDurationText(param.getValue().getDuration())));
+		durationColumn.setPrefWidth(100);
 		return durationColumn;
 	}
 
@@ -83,14 +85,16 @@ public class ConnectionResultsView extends MasterDetailPane {
 		TableColumn<Connection, String> departureTime = new TableColumn<>("Abfahrt");
 		departureTime.setCellValueFactory(
 				param -> new SimpleStringProperty(formatter.format(param.getValue().getFrom().getDeparture())));
+		departureTime.setPrefWidth(100);
 		return departureTime;
 	}
 
 	private TableColumn<Connection, String> getArrivalColumn() {
-		TableColumn<Connection, String> departureTime = new TableColumn<>("Ankunft");
-		departureTime.setCellValueFactory(
+		TableColumn<Connection, String> arrivalTime = new TableColumn<>("Ankunft");
+		arrivalTime.setCellValueFactory(
 				param -> new SimpleStringProperty(formatter.format(param.getValue().getTo().getArrival())));
-		return departureTime;
+		arrivalTime.setPrefWidth(100);
+		return arrivalTime;
 	}
 
 	private TableColumn<Connection, String> getDirectionColumn() {
@@ -104,6 +108,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 			}
 			return new SimpleStringProperty(param.getValue().getTo().getLocation().getName());
 		});
+		direction.setPrefWidth(200);
 		return direction;
 	}
 }

@@ -210,7 +210,13 @@ public class SwissTransportController {
 
 	private void selectFirst(CustomTextField textField, ObjectProperty<Location> property) {
 		List<Location> list = getLocationList(textField.getText()).getList();
-		property.setValue(!list.isEmpty() ? list.get(0) : null);
+		if (!list.isEmpty()) {
+			if (!list.get(0).equals(property.getValue())) {
+				property.setValue(list.get(0));
+			}
+		} else {
+			property.setValue(null);
+		}
 	}
 
 	private void setValidation() {

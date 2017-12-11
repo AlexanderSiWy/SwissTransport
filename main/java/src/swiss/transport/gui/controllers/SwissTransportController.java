@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -77,6 +78,8 @@ public class SwissTransportController {
 	private Tab connectionsTab;
 	@FXML
 	private TabPane tabPane;
+	@FXML
+	private BorderPane mainPane;
 
 	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");
 	private ValidationSupport validation = new ValidationSupport();

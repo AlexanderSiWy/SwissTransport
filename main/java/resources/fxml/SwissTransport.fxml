@@ -24,7 +24,7 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
 	prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="swiss.transport.gui.controllers.SwissTransportController">
+	fx:controller="swiss.transport.gui.controllers.SwissTransportController" fx:id="mainPane">
 	<center>
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>

@@ -19,18 +19,22 @@ import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Section;
 import swiss.transport.rest.transport.ConnectionRequest;
 
-public class ResultsView extends MasterDetailPane {
+public class ConnectionResultsView extends MasterDetailPane {
 
-	private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+	private TableView<Connection> connectionTable;
+
+	public ConnectionResultsView() {
+		connectionTable = getConnectionTable();
+		setMasterNode(connectionTable);
+	}
 
 	public void setConnectionRequest(Location from, Location to, LocalDate date, LocalTime time,
 			boolean isArrivalTime) {
 		ConnectionRequest connectionRequest = new ConnectionRequest(from.getId(), to.getId()).date(date).time(time)
 				.isArrivalTime(isArrivalTime).limit(ConnectionRequest.MAX_LIMIT);
 		ConnectionList connectionList = connectionRequest.get();
-		TableView<Connection> connectionTable = getConnectionTable();
 		connectionTable.setItems(new ObservableListWrapper<>(connectionList.getList()));
-		setMasterNode(connectionTable);
 	}
 
 	private TableView<Connection> getConnectionTable() {

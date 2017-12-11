@@ -24,11 +24,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
-import swiss.transport.gui.elements.ResultsView;
+import swiss.transport.gui.elements.ConnectionResultsView;
 import swiss.transport.gui.elements.TimePicker;
 import swiss.transport.rest.transport.LocationRequest;
 
@@ -37,7 +40,7 @@ public class SwissTransportController {
 	private static final Logger LOGGER = LogManager.getLogger(SwissTransportController.class);
 
 	@FXML
-	private ResultsView resultsView;
+	private ConnectionResultsView connectionResultsView;
 	@FXML
 	private CustomTextField fieldFrom;
 	@FXML
@@ -56,6 +59,8 @@ public class SwissTransportController {
 	private ToggleSwitch tglbtnTimeIsArrival;
 	@FXML
 	private Button btnSearch;
+	@FXML
+	private GridPane formPane;
 
 	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");
 	private ValidationSupport validation = new ValidationSupport();
@@ -74,6 +79,13 @@ public class SwissTransportController {
 		setArrivalDeparturePropertys();
 		setValidation();
 		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
+		formPane.setOnKeyReleased(event -> getSearchOnContolEnterEvent(event));
+	}
+
+	private void getSearchOnContolEnterEvent(KeyEvent event) {
+		if (event.isControlDown() && event.getCode().equals(KeyCode.ENTER)) {
+			search();
+		}
 	}
 
 	private void setArrivalDeparturePropertys() {
@@ -104,9 +116,15 @@ public class SwissTransportController {
 	}
 
 	@FXML
-	private void search(ActionEvent event) {
+	private void searchOnButton(ActionEvent event) {
+		search();
+	}
+
+	private void search() {
+		selectFirst(fieldTo, to);
+		selectFirst(fieldFrom, from);
 		if (!validation.isInvalid()) {
-			resultsView.setConnectionRequest(from.getValue(), to.getValue(), datePicker.getValue(),
+			connectionResultsView.setConnectionRequest(from.getValue(), to.getValue(), datePicker.getValue(),
 					timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
 		}
 	}
@@ -137,15 +155,21 @@ public class SwissTransportController {
 				(observable, oldValue, newValue) -> textField.setText(newValue != null ? newValue.getName() : ""));
 		textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
-				List<Location> list = getLocationList(textField.getText()).getList();
-				property.setValue(!list.isEmpty() ? list.get(0) : null);
+				selectFirst(textField, property);
 			}
 		});
+	}
+
+	private void selectFirst(CustomTextField textField, ObjectProperty<Location> property) {
+		List<Location> list = getLocationList(textField.getText()).getList();
+		property.setValue(!list.isEmpty() ? list.get(0) : null);
 	}
 
 	private void setValidation() {
 		final String text = "Darf nicht leer sein";
 		validation.registerValidator(fieldFrom, false,
+				(control, field) -> new ValidationResult().addErrorIf(control, text, ((String) field).isEmpty()));
+		validation.registerValidator(fieldTo, false,
 				(control, field) -> new ValidationResult().addErrorIf(control, text, ((String) field).isEmpty()));
 		validation.registerValidator(datePicker, false,
 				(control, field) -> new ValidationResult().addErrorIf(control, text, field == null));

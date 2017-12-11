@@ -12,16 +12,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.web.WebView?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.MasterDetailPane?>
 <?import org.controlsfx.control.ToggleSwitch?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import swiss.transport.gui.elements.TimePicker?>
 <?import swiss.transport.gui.elements.ConnectionResultsView?>
+<?import swiss.transport.gui.elements.StationBoardResultsView?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-	prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+	prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="swiss.transport.gui.controllers.SwissTransportController">
 	<center>
 		<GridPane BorderPane.alignment="CENTER">
@@ -128,8 +130,6 @@
 					<rowConstraints>
 						<RowConstraints minHeight="10.0"
 							prefHeight="200" vgrow="ALWAYS" />
-						<RowConstraints maxHeight="88.0" minHeight="10.0"
-							prefHeight="47.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
 						<TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="0">
@@ -141,6 +141,12 @@
 								</Tab>
 								<Tab text="Stationsliste">
 									<content>
+										<StationBoardResultsView fx:id="stationBoardResultsView" />
+									</content>
+								</Tab>
+								<Tab text="Map">
+									<content>
+										<WebView  fx:id="mapView" />
 									</content>
 								</Tab>
 							</tabs>

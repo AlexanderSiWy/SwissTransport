@@ -25,13 +25,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import swiss.transport.entity.transport.Coordinate;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
 import swiss.transport.gui.elements.ConnectionResultsView;
+import swiss.transport.gui.elements.StationBoardResultsView;
 import swiss.transport.gui.elements.TimePicker;
 import swiss.transport.rest.transport.LocationRequest;
 
@@ -41,6 +44,10 @@ public class SwissTransportController {
 
 	@FXML
 	private ConnectionResultsView connectionResultsView;
+	@FXML
+	private StationBoardResultsView stationBoardResultsView;
+	@FXML
+	private WebView mapView;
 	@FXML
 	private CustomTextField fieldFrom;
 	@FXML
@@ -79,13 +86,23 @@ public class SwissTransportController {
 		setArrivalDeparturePropertys();
 		setValidation();
 		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
-		formPane.setOnKeyReleased(event -> getSearchOnContolEnterEvent(event));
+		setSearchOnControlEnter();
 	}
 
-	private void getSearchOnContolEnterEvent(KeyEvent event) {
-		if (event.isControlDown() && event.getCode().equals(KeyCode.ENTER)) {
-			search();
-		}
+	private void loadMap() {
+		WebEngine engine = mapView.getEngine();
+		Coordinate coordinate = from.getValue().getCoordinate();
+		engine.loadContent("<iframe\r\n" + "  width=\"100%\" height=\"95%\" frameborder=\"0\" style=\"border:0\""
+				+ "  src=\"https://www.google.com/maps/embed/v1/place?key=AIzaSyCNnL2vDiSRb9urLsTosrTT5MlRohifxo0"
+				+ "&q=" + coordinate.getX() + "," + coordinate.getY() + "\"></iframe>");
+	}
+
+	private void setSearchOnControlEnter() {
+		formPane.setOnKeyReleased(event -> {
+			if (event.isControlDown() && event.getCode().equals(KeyCode.ENTER)) {
+				search();
+			}
+		});
 	}
 
 	private void setArrivalDeparturePropertys() {
@@ -124,8 +141,9 @@ public class SwissTransportController {
 		selectFirst(fieldTo, to);
 		selectFirst(fieldFrom, from);
 		if (!validation.isInvalid()) {
-			connectionResultsView.setConnectionRequest(from.getValue(), to.getValue(), datePicker.getValue(),
+			connectionResultsView.setRequest(from.getValue(), to.getValue(), datePicker.getValue(),
 					timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
+			stationBoardResultsView.setRequest(from.getValue(), datePicker.getValue(), timePicker.getTime());
 		}
 	}
 
@@ -151,13 +169,19 @@ public class SwissTransportController {
 
 	private void setTextFieldPropertys(CustomTextField textField, ObjectProperty<Location> property) {
 		TextFields.bindAutoCompletion(textField, param -> getLocationList(param.getUserText()).getList());
-		property.addListener(
-				(observable, oldValue, newValue) -> textField.setText(newValue != null ? newValue.getName() : ""));
+		property.addListener((observable, oldValue, newValue) -> {
+			setFieldText(textField, newValue);
+			loadMap();
+		});
 		textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				selectFirst(textField, property);
 			}
 		});
+	}
+
+	private void setFieldText(CustomTextField textField, Location newValue) {
+		textField.setText(newValue != null ? newValue.getName() : "");
 	}
 
 	private void selectFirst(CustomTextField textField, ObjectProperty<Location> property) {
@@ -170,7 +194,7 @@ public class SwissTransportController {
 		validation.registerValidator(fieldFrom, false,
 				(control, field) -> new ValidationResult().addErrorIf(control, text, ((String) field).isEmpty()));
 		validation.registerValidator(fieldTo, false,
-				(control, field) -> new ValidationResult().addErrorIf(control, text, ((String) field).isEmpty()));
+				(control, field) -> new ValidationResult().addWarningIf(control, text, ((String) field).isEmpty()));
 		validation.registerValidator(datePicker, false,
 				(control, field) -> new ValidationResult().addErrorIf(control, text, field == null));
 		validation.registerValidator(timePicker, false,

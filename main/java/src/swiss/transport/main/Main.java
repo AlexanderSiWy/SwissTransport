@@ -24,6 +24,7 @@ public class Main extends Application {
 			BorderPane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);
 			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (Exception e) {
 			LOGGER.error("Es ist ein fehler aufgetreten. Überprüfen Sie ihre Internet verbindung.");

@@ -29,7 +29,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 		setMasterNode(connectionTable);
 	}
 
-	public void setConnectionRequest(Location from, Location to, LocalDate date, LocalTime time,
+	public void setRequest(Location from, Location to, LocalDate date, LocalTime time,
 			boolean isArrivalTime) {
 		ConnectionRequest connectionRequest = new ConnectionRequest(from.getId(), to.getId()).date(date).time(time)
 				.isArrivalTime(isArrivalTime).limit(ConnectionRequest.MAX_LIMIT);

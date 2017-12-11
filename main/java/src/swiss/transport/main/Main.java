@@ -20,6 +20,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+				LOGGER.error(e);
+				LOGGER.debug("Stacktrace: ", e);
+			});
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/SwissTransport.fxml"));
 			BorderPane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);

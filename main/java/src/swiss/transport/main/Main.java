@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import swiss.transport.mail.Email;
 
 public class Main extends Application {
 
@@ -21,7 +20,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			new Email("hi", "test e").open();
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/SwissTransport.fxml"));
 			BorderPane pane = fxmlLoader.load();
 			Scene scene = new Scene(pane);

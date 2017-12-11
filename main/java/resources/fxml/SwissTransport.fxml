@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.web.WebView?>
@@ -24,7 +25,8 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
 	prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="swiss.transport.gui.controllers.SwissTransportController" fx:id="mainPane">
+	fx:controller="swiss.transport.gui.controllers.SwissTransportController"
+	fx:id="mainPane">
 	<center>
 		<GridPane BorderPane.alignment="CENTER">
 			<columnConstraints>
@@ -40,8 +42,8 @@
 			<children>
 				<GridPane>
 					<columnConstraints>
-						<ColumnConstraints hgrow="ALWAYS" 
-							minWidth="10.0" prefWidth="240.0" />
+						<ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
+							prefWidth="240.0" />
 						<ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0"
 							minWidth="10.0" prefWidth="400.0" />
 					</columnConstraints>
@@ -75,7 +77,7 @@
 						<GridPane vgap="10.0" GridPane.columnIndex="1" fx:id="formPane">
 							<columnConstraints>
 								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-									prefWidth="100.0"/>
+									prefWidth="100.0" />
 							</columnConstraints>
 							<rowConstraints>
 								<RowConstraints vgrow="SOMETIMES" />
@@ -107,7 +109,7 @@
 										<ToggleSwitch fx:id="tglbtnTimeIsArrival"
 											prefHeight="18.0" prefWidth="30.0" />
 										<Label fx:id="lblArrival" text="An" />
-										<Pane HBox.hgrow="ALWAYS" maxWidth="46.0"/>
+										<Pane HBox.hgrow="ALWAYS" maxWidth="46.0" />
 										<Button fx:id="btnSearch" minHeight="30"
 											mnemonicParsing="false" onAction="#searchOnButton" text="Suchen" />
 									</children>
@@ -128,25 +130,38 @@
 							prefWidth="100.0" />
 					</columnConstraints>
 					<rowConstraints>
-						<RowConstraints minHeight="10.0"
-							prefHeight="200" vgrow="ALWAYS" />
+						<RowConstraints minHeight="10.0" prefHeight="200"
+							vgrow="ALWAYS" />
 					</rowConstraints>
 					<children>
-						<TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="0" fx:id="tabPane">
+						<TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="0"
+							fx:id="tabPane">
 							<tabs>
 								<Tab text="Verbindungen" fx:id="connectionsTab">
 									<content>
-										<ConnectionResultsView fx:id="connectionResultsView" />
+										<VBox alignment="BOTTOM_RIGHT" spacing="10.0">
+											<children>
+											<Button fx:id="btnMailConnecitonResultsView" minHeight="30" minWidth="35"
+											mnemonicParsing="false" onAction="#mailConnectionResultsView" disable="true"/>
+												<ConnectionResultsView fx:id="connectionResultsView" />
+											</children>
+										</VBox>
 									</content>
 								</Tab>
 								<Tab text="Stationsliste" fx:id="stationBoardTab">
 									<content>
-										<StationBoardResultsView fx:id="stationBoardResultsView" />
+										<VBox alignment="BOTTOM_RIGHT" spacing="10.0">
+											<children>
+											<Button fx:id="btnMailStationResultsView" minHeight="30" minWidth="35"
+											mnemonicParsing="false" onAction="#mailStationResultsView" disable="true"/>
+												<StationBoardResultsView fx:id="stationBoardResultsView" />
+											</children>
+										</VBox>
 									</content>
 								</Tab>
 								<Tab text="Map" fx:id="mapTab">
 									<content>
-										<WebView  fx:id="mapView" />
+										<WebView fx:id="mapView" />
 									</content>
 								</Tab>
 							</tabs>

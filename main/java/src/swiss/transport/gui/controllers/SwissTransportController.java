@@ -1,6 +1,7 @@
 package swiss.transport.gui.controllers;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,12 +33,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.web.WebView;
+import swiss.transport.entity.transport.Connection;
 import swiss.transport.entity.transport.Coordinate;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.Location.LocationList;
+import swiss.transport.entity.transport.StationBoard;
+import swiss.transport.exception.MailNotSupportedException;
 import swiss.transport.gui.elements.ConnectionResultsView;
 import swiss.transport.gui.elements.StationBoardResultsView;
+import swiss.transport.gui.elements.TableViewToStringConverter;
 import swiss.transport.gui.elements.TimePicker;
+import swiss.transport.mail.Email;
 import swiss.transport.rest.transport.LocationRequest;
 
 public class SwissTransportController {
@@ -80,6 +86,10 @@ public class SwissTransportController {
 	private TabPane tabPane;
 	@FXML
 	private BorderPane mainPane;
+	@FXML
+	private Button btnMailConnecitonResultsView;
+	@FXML
+	private Button btnMailStationResultsView;
 
 	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");
 	private ValidationSupport validation = new ValidationSupport();
@@ -90,6 +100,8 @@ public class SwissTransportController {
 	@FXML
 	private void initialize() {
 		btnSwitch.setGraphic(font.create(Glyph.RANDOM).size(15));
+		btnMailConnecitonResultsView.setGraphic(font.create(Glyph.ENVELOPE).size(15));
+		btnMailStationResultsView.setGraphic(font.create(Glyph.ENVELOPE).size(15));
 		setTextFieldPropertys(fieldFrom, from);
 		setMapLoadOnFromChange();
 		setClosestLocation(from);
@@ -164,14 +176,18 @@ public class SwissTransportController {
 	private void search() {
 		selectFirst(fieldTo, to);
 		selectFirst(fieldFrom, from);
+		btnMailConnecitonResultsView.setDisable(true);
+		btnMailStationResultsView.setDisable(true);
 		if (!validation.isInvalid()) {
 			tabPane.getSelectionModel().select(stationBoardTab);
 			if (to.getValue() != null) {
 				connectionResultsView.setRequest(from.getValue(), to.getValue(), datePicker.getValue(),
 						timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
 				tabPane.getSelectionModel().select(connectionsTab);
+				btnMailConnecitonResultsView.setDisable(false);
 			}
 			stationBoardResultsView.setRequest(from.getValue(), datePicker.getValue(), timePicker.getTime());
+			btnMailStationResultsView.setDisable(false);
 		}
 	}
 
@@ -243,5 +259,26 @@ public class SwissTransportController {
 		Location valueFrom = from.getValue();
 		from.setValue(to.getValue());
 		to.setValue(valueFrom);
+	}
+
+	@FXML
+	private void mailStationResultsView(ActionEvent event) {
+		sendEmail(String.format("Stationsliste von %s", from.getValue().getName()),
+				new TableViewToStringConverter<StationBoard>().convert(stationBoardResultsView.getTableView()));
+	}
+
+	@FXML
+	private void mailConnectionResultsView(ActionEvent event) {
+		sendEmail(String.format("Verbindungen von %s nach %s", from.getValue().getName(), to.getValue().getName()),
+				new TableViewToStringConverter<Connection>().convert(connectionResultsView.getTableView()));
+	}
+
+	private void sendEmail(String subject, String content) {
+		try {
+			new Email(subject, content).open();
+		} catch (IOException | URISyntaxException | MailNotSupportedException e) {
+			LOGGER.error("Mail senden ist fehlgeschlagen.");
+			LOGGER.debug("Stacktrace: ", e);
+		}
 	}
 }

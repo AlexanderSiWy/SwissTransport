@@ -22,7 +22,7 @@ import swiss.transport.rest.transport.ConnectionRequest;
 public class ConnectionResultsView extends MasterDetailPane {
 
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-	private TableView<Connection> connectionTable;
+	private TableView<Connection> connectionTable = getConnectionTable();
 
 	public ConnectionResultsView() {
 		connectionTable = getConnectionTable();
@@ -50,7 +50,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 	private TableColumn<Connection, String> getPlatformColumn() {
 		TableColumn<Connection, String> platform = new TableColumn<>("Gleis");
 		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFrom().getPlatform()));
-		platform.setPrefWidth(50);
+		platform.setPrefWidth(45);
 		return platform;
 	}
 
@@ -110,5 +110,9 @@ public class ConnectionResultsView extends MasterDetailPane {
 		});
 		direction.setPrefWidth(200);
 		return direction;
+	}
+
+	public TableView<Connection> getTableView() {
+		return connectionTable;
 	}
 }

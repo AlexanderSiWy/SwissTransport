@@ -47,33 +47,59 @@ public class StationBoardResultsView extends MasterDetailPane {
 
 	private TableColumn<StationBoard, String> getPlatformColumn() {
 		TableColumn<StationBoard, String> platform = new TableColumn<>("Gleis");
-		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStop().getPlatform()));
+		platform.setCellValueFactory(param -> {
+			return new SimpleStringProperty(getPlatformText(param.getValue()));
+		});
 		platform.setPrefWidth(50);
 		return platform;
 	}
 
+	public static String getPlatformText(StationBoard value) {
+		return value.getStop().getPlatform();
+	}
+
 	private TableColumn<StationBoard, String> getDepartureColumn() {
 		TableColumn<StationBoard, String> departureTime = new TableColumn<>("Abfahrt");
-		departureTime.setCellValueFactory(
-				param -> new SimpleStringProperty(formatter.format(param.getValue().getStop().getDeparture())));
+		departureTime.setCellValueFactory(param -> {
+			return new SimpleStringProperty(getDepartureText(param.getValue()));
+		});
 		departureTime.setPrefWidth(100);
 		return departureTime;
+	}
+
+	public static String getDepartureText(StationBoard value) {
+		return formatter.format(value.getStop().getDeparture());
 	}
 
 	private TableColumn<StationBoard, String> getArrivalColumn() {
 		TableColumn<StationBoard, String> arrivalTime = new TableColumn<>("Ankunft");
 		arrivalTime.setCellValueFactory(param -> {
-			List<Stop> passList = param.getValue().getPassList();
-			return new SimpleStringProperty(formatter.format(passList.get(passList.size() - 1).getArrival()));
+			return new SimpleStringProperty(getArrivalText(param.getValue()));
 		});
 		arrivalTime.setPrefWidth(100);
 		return arrivalTime;
 	}
 
-	private TableColumn<StationBoard, String> getDirectionColumn() {
+	public static String getArrivalText(StationBoard value) {
+		List<Stop> passList = value.getPassList();
+		String text = formatter.format(passList.get(passList.size() - 1).getArrival());
+		return text;
+	}
+
+	public TableColumn<StationBoard, String> getDirectionColumn() {
 		TableColumn<StationBoard, String> direction = new TableColumn<>("Richtung");
-		direction.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTo()));
+		direction.setCellValueFactory(param -> {
+			return new SimpleStringProperty(getDirectionText(param.getValue()));
+		});
 		direction.setPrefWidth(200);
 		return direction;
+	}
+
+	public static String getDirectionText(StationBoard value) {
+		return value.getTo();
+	}
+
+	public TableView<StationBoard> getTableView() {
+		return stationBoardTable;
 	}
 }

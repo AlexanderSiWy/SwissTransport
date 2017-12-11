@@ -25,17 +25,21 @@ public class ConnectionResultsView extends MasterDetailPane {
 
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 	private TableView<Connection> connectionTable = getConnectionTable();
-	TableView<Section> detailTable = getDetailTable();
+	private TableView<Section> detailTable = getDetailTable();
 
 	public ConnectionResultsView() {
+		setDetailOnSelectedPropertyChanged();
+		setMasterNode(connectionTable);
+		setDetailNode(detailTable);
+	}
+
+	private void setDetailOnSelectedPropertyChanged() {
 		connectionTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
 				detailTable.setItems(new ObservableListWrapper<>(newValue.getSections().stream()
 						.filter(value -> value.getJourney() != null).collect(Collectors.toList())));
 			}
 		});
-		setMasterNode(connectionTable);
-		setDetailNode(detailTable);
 	}
 
 	private TableView<Section> getDetailTable() {

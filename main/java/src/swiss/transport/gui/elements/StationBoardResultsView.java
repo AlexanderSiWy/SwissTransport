@@ -11,32 +11,81 @@ import org.controlsfx.control.MasterDetailPane;
 import com.sun.javafx.collections.ObservableListWrapper;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import swiss.transport.entity.transport.Location;
 import swiss.transport.entity.transport.StationBoard;
 import swiss.transport.entity.transport.StationBoard.StationBoardList;
 import swiss.transport.entity.transport.Stop;
+import swiss.transport.rest.transport.LocationRequest;
 import swiss.transport.rest.transport.StationBoardRequest;
 
 public class StationBoardResultsView extends MasterDetailPane {
 
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-	private TableView<StationBoard> stationBoardTable;
+	private TableView<StationBoard> stationBoardTable = getTable();
+	private TableView<Stop> detailTable = getDetailTable();
+	private Location station;
 
 	public StationBoardResultsView() {
-		stationBoardTable = getConnectionTable();
 		setMasterNode(stationBoardTable);
+		setDetailNode(detailTable);
+		setDetailOnSelectedPropertyChanged();
+	}
+
+	private void setDetailOnSelectedPropertyChanged() {
+		stationBoardTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				List<Stop> passList = newValue.getPassList();
+				if (!passList.isEmpty()) {
+					passList.remove(0);
+				}
+				Stop stop = newValue.getStop();
+				stop.setLocation(station);
+				passList.add(0, stop);
+				detailTable.setItems(new ObservableListWrapper<>(passList));
+			}
+		});
+	}
+
+	private TableView<Stop> getDetailTable() {
+		TableView<Stop> tableView = new TableView<>();
+		ObservableList<TableColumn<Stop, ?>> columns = tableView.getColumns();
+		columns.add(getNameDetailColumn());
+		columns.add(getArrivalDetailColumn());
+		return tableView;
+	}
+
+	private TableColumn<Stop, String> getArrivalDetailColumn() {
+		TableColumn<Stop, String> column = new TableColumn<>("Abfahrt");
+		column.setCellValueFactory(param -> {
+			return new SimpleStringProperty(formatter.format(param.getValue().getDeparture() != null
+					? param.getValue().getDeparture() : param.getValue().getArrival()));
+		});
+		column.setPrefWidth(100);
+		return column;
+	}
+
+	private TableColumn<Stop, String> getNameDetailColumn() {
+		TableColumn<Stop, String> column = new TableColumn<>("Station");
+		column.setCellValueFactory(param -> {
+			return new SimpleStringProperty(new LocationRequest().query(param.getValue().getLocation().getId()).get()
+					.getList().get(0).getName());
+		});
+		column.setPrefWidth(200);
+		return column;
 	}
 
 	public void setRequest(Location station, LocalDate date, LocalTime time) {
+		this.station = station;
 		StationBoardRequest stationBoardRequest = new StationBoardRequest(station.getId())
 				.datetime(LocalDateTime.of(date, time));
 		StationBoardList stationBoardList = stationBoardRequest.get();
 		stationBoardTable.setItems(new ObservableListWrapper<>(stationBoardList.getList()));
 	}
 
-	private TableView<StationBoard> getConnectionTable() {
+	private TableView<StationBoard> getTable() {
 		TableView<StationBoard> tableView = new TableView<>();
 		tableView.getColumns().add(getDirectionColumn());
 		tableView.getColumns().add(getDepartureColumn());

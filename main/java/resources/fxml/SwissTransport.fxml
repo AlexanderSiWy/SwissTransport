@@ -132,19 +132,19 @@
 							prefHeight="200" vgrow="ALWAYS" />
 					</rowConstraints>
 					<children>
-						<TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="0">
+						<TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="0" fx:id="tabPane">
 							<tabs>
-								<Tab text="Verbindungen">
+								<Tab text="Verbindungen" fx:id="connectionsTab">
 									<content>
 										<ConnectionResultsView fx:id="connectionResultsView" />
 									</content>
 								</Tab>
-								<Tab text="Stationsliste">
+								<Tab text="Stationsliste" fx:id="stationBoardTab">
 									<content>
 										<StationBoardResultsView fx:id="stationBoardResultsView" />
 									</content>
 								</Tab>
-								<Tab text="Map">
+								<Tab text="Map" fx:id="mapTab">
 									<content>
 										<WebView  fx:id="mapView" />
 									</content>

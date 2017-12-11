@@ -24,11 +24,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import swiss.transport.entity.transport.Coordinate;
 import swiss.transport.entity.transport.Location;
@@ -68,6 +69,14 @@ public class SwissTransportController {
 	private Button btnSearch;
 	@FXML
 	private GridPane formPane;
+	@FXML
+	private Tab mapTab;
+	@FXML
+	private Tab stationBoardTab;
+	@FXML
+	private Tab connectionsTab;
+	@FXML
+	private TabPane tabPane;
 
 	private GlyphFont font = GlyphFontRegistry.font("FontAwesome");
 	private ValidationSupport validation = new ValidationSupport();
@@ -79,6 +88,7 @@ public class SwissTransportController {
 	private void initialize() {
 		btnSwitch.setGraphic(font.create(Glyph.RANDOM).size(15));
 		setTextFieldPropertys(fieldFrom, from);
+		setMapLoadOnFromChange();
 		setClosestLocation(from);
 		setTextFieldPropertys(fieldTo, to);
 		setCurrentDate();
@@ -89,12 +99,23 @@ public class SwissTransportController {
 		setSearchOnControlEnter();
 	}
 
+	private void setMapLoadOnFromChange() {
+		from.addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				tabPane.getSelectionModel().select(mapTab);
+				loadMap();
+			}
+		});
+	}
+
 	private void loadMap() {
-		WebEngine engine = mapView.getEngine();
-		Coordinate coordinate = from.getValue().getCoordinate();
-		engine.loadContent("<iframe\r\n" + "  width=\"100%\" height=\"95%\" frameborder=\"0\" style=\"border:0\""
+		mapView.getEngine().loadContent(getGoogleMapsIframe(from.getValue().getCoordinate()));
+	}
+
+	private String getGoogleMapsIframe(Coordinate coordinate) {
+		return "<iframe\r\n" + "  width=\"100%\" height=\"95%\" frameborder=\"0\" style=\"border:0\""
 				+ "  src=\"https://www.google.com/maps/embed/v1/place?key=AIzaSyCNnL2vDiSRb9urLsTosrTT5MlRohifxo0"
-				+ "&q=" + coordinate.getX() + "," + coordinate.getY() + "\"></iframe>");
+				+ "&q=" + coordinate.getX() + "," + coordinate.getY() + "\"></iframe>";
 	}
 
 	private void setSearchOnControlEnter() {
@@ -141,8 +162,12 @@ public class SwissTransportController {
 		selectFirst(fieldTo, to);
 		selectFirst(fieldFrom, from);
 		if (!validation.isInvalid()) {
-			connectionResultsView.setRequest(from.getValue(), to.getValue(), datePicker.getValue(),
-					timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
+			tabPane.getSelectionModel().select(stationBoardTab);
+			if (to.getValue() != null) {
+				connectionResultsView.setRequest(from.getValue(), to.getValue(), datePicker.getValue(),
+						timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
+				tabPane.getSelectionModel().select(connectionsTab);
+			}
 			stationBoardResultsView.setRequest(from.getValue(), datePicker.getValue(), timePicker.getTime());
 		}
 	}
@@ -171,7 +196,6 @@ public class SwissTransportController {
 		TextFields.bindAutoCompletion(textField, param -> getLocationList(param.getUserText()).getList());
 		property.addListener((observable, oldValue, newValue) -> {
 			setFieldText(textField, newValue);
-			loadMap();
 		});
 		textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {

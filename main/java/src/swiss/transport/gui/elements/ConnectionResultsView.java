@@ -5,12 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.controlsfx.control.MasterDetailPane;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import swiss.transport.entity.transport.Connection;
@@ -23,27 +25,86 @@ public class ConnectionResultsView extends MasterDetailPane {
 
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 	private TableView<Connection> connectionTable = getConnectionTable();
+	TableView<Section> detailTable = getDetailTable();
 
 	public ConnectionResultsView() {
-		connectionTable = getConnectionTable();
+		connectionTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				detailTable.setItems(new ObservableListWrapper<>(newValue.getSections().stream()
+						.filter(value -> value.getJourney() != null).collect(Collectors.toList())));
+			}
+		});
 		setMasterNode(connectionTable);
+		setDetailNode(detailTable);
+	}
+
+	private TableView<Section> getDetailTable() {
+		TableView<Section> tableView = new TableView<>();
+		ObservableList<TableColumn<Section, ?>> columns = tableView.getColumns();
+		columns.add(getDepartureDetailColumn());
+		columns.add(getDepartureTimeDetailColumn());
+		columns.add(getDeparturePlatformDetailColumn());
+		columns.add(getArrivalDetailColumn());
+		columns.add(getArrivalTimeDetailColumn());
+		return tableView;
+	}
+
+	private TableColumn<Section, String> getDepartureTimeDetailColumn() {
+		TableColumn<Section, String> column = new TableColumn<>("Abfahrt");
+		column.setCellValueFactory(
+				param -> new SimpleStringProperty(formatter.format(param.getValue().getDeparture().getDeparture())));
+		column.setPrefWidth(100);
+		return column;
+	}
+
+	private TableColumn<Section, String> getArrivalTimeDetailColumn() {
+		TableColumn<Section, String> column = new TableColumn<>("Ankunft");
+		column.setCellValueFactory(
+				param -> new SimpleStringProperty(formatter.format(param.getValue().getArrival().getArrival())));
+		column.setPrefWidth(100);
+		return column;
+	}
+
+	private TableColumn<Section, String> getArrivalDetailColumn() {
+		TableColumn<Section, String> column = new TableColumn<>("Nach");
+		column.setCellValueFactory(
+				param -> new SimpleStringProperty(param.getValue().getArrival().getLocation().getName()));
+		column.setPrefWidth(200);
+		return column;
+	}
+
+	private TableColumn<Section, String> getDeparturePlatformDetailColumn() {
+		TableColumn<Section, String> column = new TableColumn<>("Gleis");
+		column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getDeparture().getPlatform()));
+		column.setPrefWidth(45);
+		return column;
+	}
+
+	private TableColumn<Section, String> getDepartureDetailColumn() {
+		TableColumn<Section, String> column = new TableColumn<>("Von");
+		column.setCellValueFactory(
+				param -> new SimpleStringProperty(param.getValue().getDeparture().getLocation().getName()));
+		column.setPrefWidth(200);
+		return column;
 	}
 
 	public void setRequest(Location from, Location to, LocalDate date, LocalTime time, boolean isArrivalTime) {
 		ConnectionRequest connectionRequest = new ConnectionRequest(from.getId(), to.getId()).date(date).time(time)
 				.isArrivalTime(isArrivalTime).limit(ConnectionRequest.MAX_LIMIT);
 		ConnectionList connectionList = connectionRequest.get();
+		detailTable.setItems(null);
 		connectionTable.setItems(new ObservableListWrapper<>(connectionList.getList()));
 	}
 
 	private TableView<Connection> getConnectionTable() {
 		TableView<Connection> tableView = new TableView<>();
-		tableView.getColumns().add(getDirectionColumn());
-		tableView.getColumns().add(getDepartureColumn());
-		tableView.getColumns().add(getArrivalColumn());
-		tableView.getColumns().add(getDurationColumn());
-		tableView.getColumns().add(getTransfersColumn());
-		tableView.getColumns().add(getPlatformColumn());
+		ObservableList<TableColumn<Connection, ?>> columns = tableView.getColumns();
+		columns.add(getDirectionColumn());
+		columns.add(getDepartureColumn());
+		columns.add(getArrivalColumn());
+		columns.add(getDurationColumn());
+		columns.add(getTransfersColumn());
+		columns.add(getPlatformColumn());
 		return tableView;
 	}
 
@@ -114,5 +175,10 @@ public class ConnectionResultsView extends MasterDetailPane {
 
 	public TableView<Connection> getTableView() {
 		return connectionTable;
+	}
+
+	public void setRequestNull() {
+		detailTable.setItems(null);
+		connectionTable.setItems(null);
 	}
 }

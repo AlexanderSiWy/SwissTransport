@@ -185,6 +185,8 @@ public class SwissTransportController {
 						timePicker.getTime(), tglbtnTimeIsArrival.isSelected());
 				tabPane.getSelectionModel().select(connectionsTab);
 				btnMailConnecitonResultsView.setDisable(false);
+			} else {
+				connectionResultsView.setRequestNull();
 			}
 			stationBoardResultsView.setRequest(from.getValue(), datePicker.getValue(), timePicker.getTime());
 			btnMailStationResultsView.setDisable(false);

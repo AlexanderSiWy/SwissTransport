@@ -23,7 +23,6 @@ public class GeoLocationRequest {
 				.readEntity(GeoLocation.class);
 	}
 
-	// TODO Language
 	private List<WifiAccessPoints> getWifiAccessPoints() throws IOException {
 		Runtime runtime = Runtime.getRuntime();
 		Process process = runtime.exec("netsh wlan show networks mode=bssid");

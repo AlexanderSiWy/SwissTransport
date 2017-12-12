@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Users\alexs\SwissTransport\git\SwissTransport\build\SwissTransport.jar</jar>
-  <outfile>C:\Users\alexs\SwissTransport\git\SwissTransport\executable\SwissTransport.exe</outfile>
+  <outfile>C:\Users\alexs\SwissTransport\git\SwissTransport\executable\SwissTransport\SwissTransport.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -15,8 +15,8 @@
   <manifest></manifest>
   <icon>C:\Users\alexs\SwissTransport\git\SwissTransport\build\logo.ico</icon>
   <jre>
-    <path>C:\Program Files\Java\jre1.8.0_131</path>
-    <bundledJre64Bit>true</bundledJre64Bit>
+    <path>./jre/</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion></minVersion>
     <maxVersion></maxVersion>

@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,7 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.PseudoClass;
@@ -104,7 +106,6 @@ public class SwissTransportController {
 		btnMailStationResultsView.setGraphic(font.create(Glyph.ENVELOPE).size(15));
 		setTextFieldPropertys(fieldFrom, from);
 		setMapLoadOnFromChange();
-		setClosestLocation(from);
 		setTextFieldPropertys(fieldTo, to);
 		setCurrentDate();
 		setCurrentTime();
@@ -112,6 +113,7 @@ public class SwissTransportController {
 		setValidation();
 		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
 		setSearchOnControlEnter();
+		setClosestLocation(from);
 	}
 
 	private void setMapLoadOnFromChange() {
@@ -194,15 +196,20 @@ public class SwissTransportController {
 	}
 
 	private void setClosestLocation(ObjectProperty<Location> property) {
-		try {
-			Location closestLocation = LocationList.getClosestLocation();
-			if (closestLocation != null) {
-				property.setValue(closestLocation);
+		// so it doesn't crash if getting closest location doesn't work
+		Executors.newSingleThreadExecutor().submit(() -> {
+			try {
+				Location closestLocation = LocationList.getClosestLocation();
+				Platform.runLater(() -> {
+					if (closestLocation != null) {
+						property.setValue(closestLocation);
+					}
+				});
+			} catch (IOException e) {
+				LOGGER.warn("Standort wurde nicht gefunden.");
+				LOGGER.debug("Stacktrace: ", e);
 			}
-		} catch (IOException e) {
-			LOGGER.warn("Standort wurde nicht gefunden.");
-			LOGGER.debug("Stacktrace: ", e);
-		}
+		});
 	}
 
 	private void setCurrentTime() {

@@ -30,8 +30,10 @@ public class TableViewToStringConverter<T> {
 	}
 
 	private String toLenght(String text, Integer length) {
-		double difference = (length + 5 - text.length()) * 1.1;
-		while (text.length() < difference + length) {
+		// because in email a space is not same size as a normal char
+		int localLength = length + 5;
+		double difference = (localLength - text.length()) * 1.1;
+		while (text.length() < difference + localLength) {
 			text = text.concat(" ");
 		}
 		return text;

@@ -30,8 +30,8 @@ public class TableViewToStringConverter<T> {
 	}
 
 	private String toLenght(String text, Integer length) {
-		double localLength = (length - text.length()) * 1.1;
-		while (text.length() < localLength + length) {
+		double difference = (length + 5 - text.length()) * 1.1;
+		while (text.length() < difference + length) {
 			text = text.concat(" ");
 		}
 		return text;

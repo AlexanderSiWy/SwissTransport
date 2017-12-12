@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.glyphfont.FontAwesome.Glyph;
@@ -113,7 +114,7 @@ public class SwissTransportController {
 		setValidation();
 		validation.invalidProperty().addListener((observable, oldValue, newValue) -> btnSearch.setDisable(newValue));
 		setSearchOnControlEnter();
-		setClosestLocation(from);
+		setClosestLocation(from, fieldFrom);
 	}
 
 	private void setMapLoadOnFromChange() {
@@ -195,7 +196,7 @@ public class SwissTransportController {
 		}
 	}
 
-	private void setClosestLocation(ObjectProperty<Location> property) {
+	private void setClosestLocation(ObjectProperty<Location> property, CustomTextField field) {
 		// so it doesn't crash if getting closest location doesn't work
 		Executors.newSingleThreadExecutor().submit(() -> {
 			try {
@@ -221,14 +222,22 @@ public class SwissTransportController {
 	}
 
 	private void setTextFieldPropertys(CustomTextField textField, ObjectProperty<Location> property) {
-		TextFields.bindAutoCompletion(textField, param -> getLocationList(param.getUserText()).getList());
-		property.addListener((observable, oldValue, newValue) -> {
-			setFieldText(textField, newValue);
-		});
+		bindAutoComplete(textField);
+		property.addListener((observable, oldValue, newValue) -> setFieldText(textField, newValue));
 		textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				selectFirst(textField, property);
 			}
+		});
+	}
+
+	private AutoCompletionBinding<Location> bindAutoComplete(CustomTextField textField) {
+		return TextFields.bindAutoCompletion(textField, param -> {
+			List<Location> list = getLocationList(param.getUserText()).getList();
+			if (!list.isEmpty() && list.get(0).getName().equals(textField.getText())) {
+				return null;
+			}
+			return list;
 		});
 	}
 

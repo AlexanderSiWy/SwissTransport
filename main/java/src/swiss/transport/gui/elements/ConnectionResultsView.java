@@ -23,7 +23,8 @@ import swiss.transport.rest.transport.ConnectionRequest;
 
 public class ConnectionResultsView extends MasterDetailPane {
 
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+	private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 	private TableView<Connection> connectionTable = getConnectionTable();
 	private TableView<Section> detailTable = getDetailTable();
 
@@ -55,17 +56,17 @@ public class ConnectionResultsView extends MasterDetailPane {
 
 	private TableColumn<Section, String> getDepartureTimeDetailColumn() {
 		TableColumn<Section, String> column = new TableColumn<>("Abfahrt");
-		column.setCellValueFactory(
-				param -> new SimpleStringProperty(formatter.format(param.getValue().getDeparture().getDeparture())));
-		column.setPrefWidth(100);
+		column.setCellValueFactory(param -> new SimpleStringProperty(
+				TIME_FORMATTER.format(param.getValue().getDeparture().getDeparture())));
+		column.setPrefWidth(60);
 		return column;
 	}
 
 	private TableColumn<Section, String> getArrivalTimeDetailColumn() {
 		TableColumn<Section, String> column = new TableColumn<>("Ankunft");
 		column.setCellValueFactory(
-				param -> new SimpleStringProperty(formatter.format(param.getValue().getArrival().getArrival())));
-		column.setPrefWidth(100);
+				param -> new SimpleStringProperty(TIME_FORMATTER.format(param.getValue().getArrival().getArrival())));
+		column.setPrefWidth(60);
 		return column;
 	}
 
@@ -80,7 +81,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 	private TableColumn<Section, String> getDeparturePlatformDetailColumn() {
 		TableColumn<Section, String> column = new TableColumn<>("Gleis");
 		column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getDeparture().getPlatform()));
-		column.setPrefWidth(45);
+		column.setPrefWidth(50);
 		return column;
 	}
 
@@ -104,6 +105,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 		TableView<Connection> tableView = new TableView<>();
 		ObservableList<TableColumn<Connection, ?>> columns = tableView.getColumns();
 		columns.add(getDirectionColumn());
+		columns.add(getDateColumn());
 		columns.add(getDepartureColumn());
 		columns.add(getArrivalColumn());
 		columns.add(getDurationColumn());
@@ -115,7 +117,7 @@ public class ConnectionResultsView extends MasterDetailPane {
 	private TableColumn<Connection, String> getPlatformColumn() {
 		TableColumn<Connection, String> platform = new TableColumn<>("Gleis");
 		platform.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFrom().getPlatform()));
-		platform.setPrefWidth(45);
+		platform.setPrefWidth(50);
 		return platform;
 	}
 
@@ -149,16 +151,24 @@ public class ConnectionResultsView extends MasterDetailPane {
 	private TableColumn<Connection, String> getDepartureColumn() {
 		TableColumn<Connection, String> departureTime = new TableColumn<>("Abfahrt");
 		departureTime.setCellValueFactory(
-				param -> new SimpleStringProperty(formatter.format(param.getValue().getFrom().getDeparture())));
-		departureTime.setPrefWidth(100);
+				param -> new SimpleStringProperty(TIME_FORMATTER.format(param.getValue().getFrom().getDeparture())));
+		departureTime.setPrefWidth(60);
+		return departureTime;
+	}
+
+	private TableColumn<Connection, String> getDateColumn() {
+		TableColumn<Connection, String> departureTime = new TableColumn<>("Datum");
+		departureTime.setCellValueFactory(
+				param -> new SimpleStringProperty(DATE_FORMATTER.format(param.getValue().getFrom().getDeparture())));
+		departureTime.setPrefWidth(75);
 		return departureTime;
 	}
 
 	private TableColumn<Connection, String> getArrivalColumn() {
 		TableColumn<Connection, String> arrivalTime = new TableColumn<>("Ankunft");
 		arrivalTime.setCellValueFactory(
-				param -> new SimpleStringProperty(formatter.format(param.getValue().getTo().getArrival())));
-		arrivalTime.setPrefWidth(100);
+				param -> new SimpleStringProperty(TIME_FORMATTER.format(param.getValue().getTo().getArrival())));
+		arrivalTime.setPrefWidth(60);
 		return arrivalTime;
 	}
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 
 import org.controlsfx.control.MasterDetailPane;
@@ -39,12 +40,13 @@ public class StationBoardResultsView extends MasterDetailPane {
 		stationBoardTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
 				List<Stop> passList = newValue.getPassList();
-				if (!passList.isEmpty()) {
-					passList.remove(0);
+				Iterator<Stop> iterator = passList.iterator();
+				if (iterator.hasNext()) {
+					iterator.next().setLocation(station);
 				}
-				Stop stop = newValue.getStop();
-				stop.setLocation(station);
-				passList.add(0, stop);
+				// reload station because station name is not filled
+				iterator.forEachRemaining(station -> station.setLocation(
+						new LocationRequest().query(station.getLocation().getId()).get().getList().get(0)));
 				detailTable.setItems(new ObservableListWrapper<>(passList));
 			}
 		});
@@ -69,8 +71,7 @@ public class StationBoardResultsView extends MasterDetailPane {
 
 	private TableColumn<Stop, String> getNameDetailColumn() {
 		TableColumn<Stop, String> column = new TableColumn<>("Station");
-		column.setCellValueFactory(param -> new SimpleStringProperty(
-				new LocationRequest().query(param.getValue().getLocation().getId()).get().getList().get(0).getName()));
+		column.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getLocation().getName()));
 		column.setPrefWidth(200);
 		return column;
 	}

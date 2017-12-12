@@ -148,7 +148,7 @@
 										</VBox>
 									</content>
 								</Tab>
-								<Tab text="Stationsliste" fx:id="stationBoardTab">
+								<Tab text="Abfahrtstafel" fx:id="stationBoardTab">
 									<content>
 										<VBox alignment="BOTTOM_RIGHT" spacing="10.0">
 											<children>
